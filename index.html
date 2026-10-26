@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio - O Futuro Sustentável</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0f0f0f',
+                        cardBg: '#181818',
+                        accentGreen: '#22c55e'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d0d0d;
+            color: #ffffff;
+            user-select: none;
+        }
+
+        /* Overlay preto que o usuário precisará desativar/ocultar via Inspetor */
+        .overlay-preta {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #0d0d0d;
+            z-index: 40;
+            pointer-events: none; /* Permite clicar nos botões mesmo com o overlay ativo */
+            transition: opacity 0.3s ease;
+        }
+
+        /* Animação de tremor quando errar a palavra */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-8px); }
+            40%, 80% { transform: translateX(8px); }
+        }
+        .shake-errado {
+            animation: shake 0.4s ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between items-center p-4 relative overflow-x-hidden bg-[#0d0d0d]">
+
+    <!-- PALAVRA OCULTA NO "FUNDO"
+         Quando o participante aplicar 'display: none' na div#fundo-preto-ocultador no DevTools, 
+         esta palavra ficará visível no canto inferior! 
+    -->
+    <div id="palavra-secreta" class="fixed bottom-4 left-4 text-emerald-400 font-mono text-base tracking-widest z-10 select-all font-bold bg-emerald-950/80 px-4 py-2 rounded-lg border border-emerald-500/50 shadow-lg">
+        🔍 CÓDIGO OCULTO: <span class="text-white underline decoration-emerald-400">Yayzktzghorojgjk</span>
+    </div>
+
+    <!-- CAMADA DE OVERLAY PRETA QUE OCULTA A PALAVRA DO FUNDO 
+         O participante deve achar esta DIV no DevTools e aplicar 'display: none' ou apagá-la! -->
+    <div class="overlay-preta" id="fundo-preto-ocultador" title="Desative esta div no Inspetor (display: none) para ver a palavra oculta!"></div>
+
+    <!-- DESAFIO PRINCIPAL -->
+    <main class="w-full max-w-4xl mx-auto flex flex-col items-center text-center my-auto py-8 z-50">
+        
+        <!-- Título Principal -->
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-wide text-white uppercase mb-8 max-w-3xl leading-snug">
+            Yayzktzghorojgjk
+        </h1>
+
+                <!-- Dica -->
+        <p class="text-gray-500 text-xs sm:text-sm font-medium mb-8 tracking-wide">
+            Investigue a palavra encriptografada com a cifra de César. <br> Dica: Chave de deslocamento 6 caracteres.
+        </p>
+        <!-- Imagem Central -->
+        <div class="w-full max-w-2xl rounded-2xl overflow-hidden shadow-2xl mb-8 border border-white/10 group">
+            <img 
+                src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1200&auto=format&fit=crop" 
+                alt="Cidade Ecológica Sustentável" 
+                class="w-full h-auto max-h-[380px] object-cover transition-transform duration-500 group-hover:scale-105"
+                onerror="this.onerror=null; this.src='https://placehold.co/800x450/111827/ffffff?text=Futuro+Sustentavel';"
+            />
+        </div>
+
+
+<p class="text-gray-500 text-xs sm:text-sm font-medium mb-8 tracking-wide"> Nasci em um relatório histórico no final dos anos 80, batizado com o nome de uma premiada líder norueguesa.
+Defini o futuro ao afirmar que devemos suprir as necessidades do presente sem comprometer as gerações que virão.
+Quem sou eu?</p>
+
+
+        <!-- Form de Validação (Input + Botão) -->
+        <form id="form-resposta" class="w-full max-w-md flex flex-col sm:flex-row gap-3 items-center justify-center">
+            <input 
+                type="text" 
+                id="input-palavra" 
+                placeholder="Digite a palavra descoberta..." 
+                autocomplete="off"
+                class="w-full px-4 py-3 rounded-xl bg-neutral-900 border border-neutral-700 text-white placeholder-gray-500 focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all text-center sm:text-left"
+            />
+            <button 
+                type="submit" 
+                class="w-full sm:w-auto px-6 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white font-semibold transition-all duration-200 shadow-lg shadow-emerald-900/30 whitespace-nowrap cursor-pointer">
+                Verificar
+            </button>
+        </form>
+
+        <!-- Mensagem de Erro -->
+        <div id="mensagem-erro" class="hidden mt-4 text-red-400 text-sm bg-red-950/60 border border-red-800/80 px-5 py-2.5 rounded-xl font-medium">
+            ❌ Palavra incorreta! Investigue o código da página e tente novamente.
+        </div>
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="w-full text-center py-4 text-xs text-neutral-600 z-50">
+        Dinâmica Interativa &bull; Sustentabilidade & Codificação
+    </footer>
+
+    <!-- Lógica JavaScript -->
+    <script>
+        const formResposta = document.getElementById('form-resposta');
+        const inputPalavra = document.getElementById('input-palavra');
+        const mensagemErro = document.getElementById('mensagem-erro');
+
+        // Palavra correta para redirecionar
+        const PALAVRA_CORRETA = 'sustentabilidade';
+        const URL_REDIRECIONAMENTO = 'https://www.netflix.com';
+
+        formResposta.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Normaliza o texto (remove espaços e ignora maiúsculas/minúsculas)
+            const valorDigitado = inputPalavra.value.trim().toLowerCase();
+
+            if (valorDigitado === PALAVRA_CORRETA) {
+                // Sucesso: esconde o erro e redireciona para a Netflix
+                mensagemErro.classList.add('hidden');
+                window.location.href = URL_REDIRECIONAMENTO;
+            } else {
+                // Erro: exibe o aviso e aplica efeito no input
+                mensagemErro.classList.remove('hidden');
+                
+                inputPalavra.classList.add('border-red-500', 'shake-errado');
+                
+                setTimeout(() => {
+                    inputPalavra.classList.remove('shake-errado');
+                }, 400);
+            }
+        });
+
+        // Remove estilo de erro ao voltar a digitar
+        inputPalavra.addEventListener('input', function() {
+            inputPalavra.classList.remove('border-red-500');
+            mensagemErro.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
